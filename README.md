@@ -1,23 +1,64 @@
-# NighChain Crypto Currency 
+# NighChain Crypto Currency
 
-## Index.js 
-- This is the main file that consist of all the functions and back end work to create the block chain, ensure valid input and make sure there are no collisions within the hashing proccess 
+## Project Overview
+NighChain is a simple cryptocurrency system built using JavaScript. The blockchain stores transaction data and provides a mechanism to mine new blocks with basic validation. This project includes a backend API to interact with the blockchain and a frontend to visualize and mine new blocks.
 
-## Server.js 
-- This is the web interface server hosted on port 8000 of the local machine and can be started from a terminal in same directory with `npm server.js` contains all code for CRUD functions.
+## File Structure
 
-## TestNight.js 
-- Test file for development proccess to test not using the front end 
+### `index.js`
+This file contains the logic for the blockchain, including functions to:
+- Create new blocks
+- Ensure the validity of the chain by checking for hash collisions
+- Handle transactions
 
-## Web.html
-- This is the front end the user will interact with and create there unique chain
+### `server.js`
+This file is the backend API server hosted on port 8000. It handles CRUD operations for the blockchain, including endpoints for fetching the blockchain and mining new blocks.
 
-## Blockchain.json 
-- This is where the chain is currently stored to keep it neat and persist between stop and starts and ensures the data isn't lost 
+### `testNight.js`
+A testing file used for development to ensure the backend logic works without the need for the front end.
 
+### `web.html`
+This is the frontend page that users interact with to mine new blocks and view the blockchain ledger.
 
-## Starting the Website 
-```bash
-node server.js 
-npm start
-```
+### `blockchain.json`
+A JSON file that persists the blockchain data, ensuring it is not lost between server restarts.
+
+## Starting the Website
+
+To start the project, follow these steps:
+
+1. Install the dependencies:
+    ```bash
+    npm install
+    ```
+
+2. Start the backend API:
+    ```bash
+    node server.js
+    ```
+
+3. Start the frontend by opening `index.html` in your browser.
+
+### API Endpoints
+
+- `GET /blocks`: Returns the current blockchain.
+- `POST /mine`: Mines a new block with the provided transaction data.
+
+## Example Usage
+
+1. **Mining a New Block**
+   To mine a new block, send a `POST` request to `/mine` with the following JSON data:
+
+   ```json
+   {
+     "amount": 100,
+     "sender": "Alice",
+     "recipient": "Bob"
+   }
+   
+## Example with curl
+- `curl -X POST http://localhost:8000/mine -H "Content-Type: application/json" -d '{"amount": 100, "sender": "Alice", "recipient": "Bob"}'`
+
+## Viewing the Blockchain To view the blockchain, send a GET request to /blocks:
+- `curl http://localhost:8000/blocks`
+
