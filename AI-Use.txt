@@ -1,0 +1,1 @@
+Given Exisiting code add to my function to check if there is an existing log file else create a new genisis block and used to make look pretty

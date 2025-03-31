@@ -1,0 +1,417 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Demo Page</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/particles.js@2.0.0"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <style>
+        /* Custom button and input styles */
+        .custom-btn {
+            background-color: #6b46c1; /* Deep purple button */
+            color: white;
+            padding: 12px 24px;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+        }
+
+        .custom-input {
+            border: 2px solid #6b46c1; /* Deep purple input border */
+            padding: 10px;
+            font-size: 16px;
+            border-radius: 8px;
+            width: 100%;
+        }
+
+        /* Custom deep purple background color */
+        .deep-purple-bg {
+            background-color: #2a004f; /* Deep purple almost black */
+        }
+
+        .logo-glow {
+            text-shadow: 0 0 10px rgba(255, 255, 255, 0.8), 0 0 20px rgba(255, 255, 255, 0.6), 0 0 30px rgba(255, 255, 255, 0.4), 0 0 40px rgba(255, 255, 255, 0.2);
+        }
+
+        .gradient-bg {
+            background: linear-gradient(45deg, #2a004f, #6b46c1);
+            z-index: -1;
+        }
+
+        /* Full screen particles container */
+        #particles-js {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;  /* Ensure particles appear in the background */
+        }
+
+        /* Gradient header bar (without black bar) */
+        .gradient-bar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 55px; /* Adjust the height of the gradient bar */
+            background: linear-gradient(45deg, #3c2476, #2a004f); /* Gradient */
+            z-index: 2;
+        }
+
+        /* Main content card container */
+        .content-card {
+            position: relative;
+            z-index: 2;  /* Ensure the card stays above the particles animation */
+        }
+
+        /* NightFall Crypto Logo Container */
+        .logo-container {
+            display: flex;
+            align-items: center;
+            justify-content: flex-start;
+            position: fixed;
+            top: 20px; /* Keep the same distance from the top */
+            left: 20px; /* Keep the same distance from the left */
+            z-index: 2;
+        }
+
+        /* Logo image styles */
+        .logo-img {
+            width: 72px;  /* Match the font size (text-7xl approx 72px) */
+            height: 72px;
+            border-radius: 10%;  /* Make it circular */
+            margin-right: 10px;  /* Space between the logo and text */
+        }
+
+        /* Centered mining form styles */
+        .mining-form {
+            max-width: 800px;
+            width: 100%;
+            margin-right: 60px; /* Center it horizontally */
+            padding: 20px;
+            background-color: rgba(255, 255, 255, 0.95);
+            border-radius: 12px;
+            border: 2px solid #6b46c1;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            background: linear-gradient(45deg, #6b46c1, #2a004f);
+            z-index: 1;
+        }
+
+        .mining-form input,
+        .mining-form button {
+            margin-bottom: 12px;
+        }
+
+        /* General Styling for Ledger Section */
+        #ledgerSection {
+            color: white;
+            position: relative; /* Ensure it can stack above other elements */
+            z-index: 10; /* Make sure it appears above the particles */
+        }
+
+        /* Grid Layout for Blockchain Cards */
+        #blockchain {
+            display: grid;
+            grid-template-columns: repeat(1, 1fr); /* Default 1 column for smaller screens */
+            gap: 20px;
+            padding: 10px;
+            width: 100%; /* Make sure the parent container takes full width */
+
+        }
+
+        .block-card {
+            background-color: rgba(255, 255, 255, 0.95);
+            padding: 20px;
+            border-radius: 12px;
+            border: 2px solid #6b46c1;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            text-align: left;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            min-height: 300px; /* Ensure each card has a minimum height */
+            max-width: 450px; /* Increase the width of the card */
+            width: 100%;;
+
+        }
+
+        .block-card p {
+            margin-bottom: 8px;
+            font-size: 16px;
+        }
+
+        /* Styling for smaller devices */
+        @media (max-width: 768px) {
+            #blockchain {
+                grid-template-columns: repeat(1, 1fr); /* Stack cards in 1 column on small screens */
+            }
+        }
+
+        /* Responsive for larger screens (more columns) */
+        @media (min-width: 850px) {
+            #blockchain {
+                grid-template-columns: repeat(2, 1fr); /* 2 columns for medium screens */
+            }
+        }
+
+        @media (min-width: 1024px) {
+            #blockchain {
+                grid-template-columns: repeat(3, 1fr); /* 3 columns for larger screens */
+            }
+        }
+
+        @media (min-width: 1400px) {
+            #blockchain {
+                grid-template-columns: repeat(4, 1fr); /* 4 columns for even larger screens */
+            }
+        }
+
+        @media (min-width: 1800px) {
+            #blockchain {
+                grid-template-columns: repeat(5, 1fr); /* 5 columns for extra-large screens */
+            }
+        }
+
+        /* Card Text Adjustments */
+        .block-card pre {
+            font-size: 14px;
+            background-color: #f7fafc;
+            color: #1a202c;
+            padding: 10px;
+            border-radius: 8px;
+            overflow-x: auto;
+        }
+
+        /* Responsive Card Width */
+        .block-card {
+            width: 100%; /* Ensure cards use full width of their container */
+            max-width: 800px; /* Limit max width of each card */
+        }
+        
+
+    </style>
+</head>
+
+<body class="gradient-bg">
+
+    <!-- Gradient Header Bar (without the black bar) -->
+    <div class="gradient-bar"></div>
+
+    <!-- Particles.js Container -->
+    <div id="particles-js"></div>
+
+    <!-- Logo Container -->
+    <div class="logo-container">
+        <img src="./NightFallLogo.png" alt="NightFall Logo" class="logo-img"> <!-- Replace 'your-logo-url.png' with the actual logo path -->
+        <div class="text-7xl font-bold text-white logo-glow">NightFall</div>
+    </div>
+
+    <!-- Main content -->
+    <div class="flex items-center justify-center min-h-screen ">
+        <div class="text-center px-4">
+            <h1 class="text-5xl lg:text-8xl font-bold mb-4 text-white text-shadow">NightFall Crypto Currency Manager</h1>
+            <p class="text-2xl lg:text-3xl text-white text-shadow">Manage your crypto currency with ease!</p>
+        </div>
+
+        <!-- New Mining Form -->
+        <div class="mining-form">
+            <h2 class="text-3xl font-semibold mb-2 text-white text-center">Mine a New Block</h2>
+            <input id="amount" class="border p-2 w-full mb-2 bg-transparent text-white border-purple-500 placeholder-white" type="number" placeholder="Amount">
+            <input id="sender" class="border p-2 w-full mb-2 bg-transparent text-white border-purple-500 placeholder-white" type="text" placeholder="Sender">
+            <input id="recipient" class="border p-2 w-full mb-2 bg-transparent text-white border-purple-500 placeholder-white" type="text" placeholder="Recipient">
+            <button id="mineBtn" class="bg-purple-500 text-white p-2 w-full rounded-md logo-glow">Mine Block</button>
+            <button id="ledgerBtn" class="bg-purple-500 text-white p-2 w-full rounded-md mt-2 logo-glow">See Ledger</button>
+        </div>
+    </div>
+    
+    <!-- Blockchain Display (Initially Hidden) -->
+    <div id="ledgerSection" class="min-h-screen py-12 px-4" style="display: none;">
+        <h2 class="text-7xl font-semibold mb-6 text-white text-center">Blockchain Ledger</h2>
+        <div id="blockchain" class="w-full max-w-full mx-auto grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-8">
+            <!-- Blocks will be dynamically inserted here -->
+        </div>
+    </div>
+
+
+
+    <script>
+        // Initialize Particles.js with custom options
+        particlesJS('particles-js', {
+            particles: {
+                number: {
+                    value: 200,  // Increase particle count for better visibility
+                    density: {
+                        enable: true,
+                        value_area: 1000  // Adjust for more density
+                    }
+                },
+                shape: {
+                    type: 'circle',
+                },
+                color: {
+                    value: '#6b46c1'  // Purple particles
+                },
+                opacity: {
+                    value: 0.7,  // Set opacity to make them more visible
+                    random: true,
+                    anim: {
+                        enable: true,
+                        speed: 1,
+                        opacity_min: 0.1,
+                        sync: false
+                    }
+                },
+                size: {
+                    value: 6,  // Make particles larger
+                    random: true,
+                    anim: {
+                        enable: false
+                    }
+                },
+                links: {
+                    enable: true,
+                    distance: 150,
+                    color: '#6b46c1',
+                    opacity: 0.4,
+                    width: 1
+                },
+                move: {
+                    enable: true,
+                    speed: 2,
+                    direction: 'random',
+                    random: true,
+                    straight: false,
+                    out_mode: 'out',
+                    bounce: false
+                }
+            },
+            interactivity: {
+                detect_on: 'canvas',
+                events: {
+                    onhover: {
+                        enable: true,
+                        mode: 'repulse'
+                    },
+                    onclick: {
+                        enable: true,
+                        mode: 'push'
+                    }
+                },
+            },
+            retina_detect: true
+        });
+
+        const API_URL = "http://localhost:8000";
+
+        // Fetch and display blockchain
+        async function fetchBlockchain() {
+            const res = await fetch(API_URL + "/blocks");
+            const blocks = await res.json();
+            const blockchainDiv = document.getElementById("blockchain");
+            blockchainDiv.innerHTML = ""; // Clear old data
+
+
+            // Sort blocks by index in descending order (most recent first)
+            blocks.sort((a, b) => b.index - a.index);
+
+            blocks.forEach(block => {
+                blockchainDiv.innerHTML += `
+                <div class="block-card p-6 bg-white rounded-lg shadow-lg">
+                <p><strong class="text-purple-400">Index:</strong> <span class="text-black">${block.index}</span></p>
+                <p><strong class="text-purple-400">Time:</strong> <span class="text-black">${new Date(block.time).toLocaleString()}</span></p>
+                <p><strong class="text-purple-400">Transaction:</strong><pre class="text-xs break-words whitespace-pre-wrap text-black">${JSON.stringify(block.transaction, null, 2)}</pre></p>
+                <p><strong class="text-purple-400">Nonce:</strong> <span class="text-black">${block.nonce}</span></p>
+                <p class="break-words"><strong class="text-purple-400">Hash:</strong> <span class="text-xs break-all text-black">${block.hash}</span></p>
+                <p class="break-words"><strong class="text-purple-400">Prev Hash:</strong> <span class="text-xs break-all text-black">${block.previousHash}</span></p>
+                </div>`;
+            });
+        }
+
+        // Mine a new block
+        document.getElementById("mineBtn").addEventListener("click", async () => {
+            const amount = document.getElementById("amount").value;
+            const sender = document.getElementById("sender").value;
+            const recipient = document.getElementById("recipient").value;
+
+        
+            // Check if any field is empty
+            if (!amount || !sender || !recipient) {
+                Swal.fire({
+                    icon: "error",
+                    title: "Missing Information",
+                    text: "Please fill in all fields before mining a block.",
+                    confirmButtonColor: "#8B5CF6" // Purple theme
+                });
+                return;
+            }
+        
+            try {
+                const res = await fetch(API_URL + "/mine", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ amount, sender, recipient })
+                });
+        
+                const data = await res.json();
+        
+                if (res.ok) {
+                    await Swal.fire({
+                        icon: "success",
+                        title: "Block Mined!",
+                        text: data.message || "A new block has been successfully added to the chain.",
+                        confirmButtonColor: "#8B5CF6",
+                    });
+                            
+                    // Delay fetchBlockchain() to avoid interference
+                    setTimeout(async () => {
+                        await fetchBlockchain();
+                    }, 1500);
+                    
+                    location.reload(); // Refresh the page after a delay
+
+
+                } else {
+                    Swal.fire({
+                        icon: "error",
+                        title: "Mining Failed",
+                        text: data.message || "An error occurred while mining the block.",
+                        confirmButtonColor: "#8B5CF6"
+                    });
+                }
+            } catch (error) {
+                Swal.fire({
+                    icon: "error",
+                    title: "Server Error",
+                    text: "Failed to connect to the server. Please try again later.",
+                    confirmButtonColor: "#8B5CF6"
+                });
+            }
+        });
+        // Fetch and display blockchain when the "See Ledger" button is clicked
+        document.getElementById("ledgerBtn").addEventListener("click", async () => {
+            Swal.fire({
+                title: "Fetching Blockchain...",
+                text: "Please wait while the ledger updates.",
+                icon: "info",
+                showConfirmButton: false,
+                timer: 1500
+            });
+
+            await fetchBlockchain();
+            
+            // Make ledger visible after fetching data
+            const ledgerSection = document.getElementById("ledgerSection");
+            ledgerSection.style.display = "flex"; // Use flex to center items
+            ledgerSection.style.flexDirection = "column"; // Arrange items in a column
+            ledgerSection.style.alignItems = "center"; // Ensure center alignment
+        });
+        
+    </script>
+
+</body>
+
+</html>
