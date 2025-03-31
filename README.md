@@ -1,5 +1,9 @@
 # NighChain Crypto Currency
 
+## Images of the page, It includes a custom logo and live background
+![image](https://github.com/user-attachments/assets/9f3309fb-8d20-4f32-aa03-3d42e2f7c4da)
+![image](https://github.com/user-attachments/assets/9c08a169-805f-43a3-85a6-43738b96e479)
+
 ## Project Overview
 NighChain is a simple cryptocurrency system built using JavaScript. The blockchain stores transaction data and provides a mechanism to mine new blocks with basic validation. This project includes a backend API to interact with the blockchain and a frontend to visualize and mine new blocks.
 
